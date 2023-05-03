@@ -1963,11 +1963,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 3712938070647302125, guid: 67fb0b936bf72324a8e4240631465256,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8283320782093114808, guid: 67fb0b936bf72324a8e4240631465256,
         type: 3}
       propertyPath: m_AnchorMax.y

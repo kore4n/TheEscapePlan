@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 1
-  category: -1
+  category: 4
 --- !u!54 &865863499780287216
 Rigidbody:
   m_ObjectHideFlags: 0
