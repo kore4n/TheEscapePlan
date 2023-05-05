@@ -58,7 +58,7 @@ namespace Player
 
             if (Physics.Raycast(lookCamera.transform.position, lookCamera.transform.forward, out RaycastHit hit, Mathf.Infinity, interactLayer))
             {
-                //Debug.Log($"Hit {hit.transform.name}");
+                Debug.Log($"Hit {hit.transform.name}");
 
                 var thing = hit.transform.GetComponent<NetworkObject>();
 
