@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Item;
+using UnityEditor;
+using System;
 
 namespace Player
 {
     public class PlayerNetworkBody : NetworkBehaviour
     {
+        [SerializeField] [Range(1, 10)] private float interactReach = 5;
+
         [SerializeField] private GameObject lookCamera;
 
         // Disable aim controller for other players
@@ -20,6 +24,14 @@ namespace Player
 
         [SerializeField] private Inventory inventory;
         [SerializeField] private PlayerPermissions playerPermissions;
+
+
+        #region Events
+        public static event Action OnShowInteractPrompt;
+        public static event Action OnHideInteractPrompt;
+        #endregion
+
+
 
         private void Start()
         {
@@ -45,6 +57,8 @@ namespace Player
                 Debug.Log("E was pressed!");
                 InteractServerRpc();
             }
+
+            InteractHighlight();
         }
 
         /// <summary>
@@ -56,7 +70,7 @@ namespace Player
             //Debug.Log("From server: Trying to interact!");
             //Debug.DrawRay(lookCamera.transform.position, lookCamera.transform.forward, Color.blue, 5f);
 
-            if (Physics.Raycast(lookCamera.transform.position, lookCamera.transform.forward, out RaycastHit hit, Mathf.Infinity, interactLayer))
+            if (Physics.Raycast(lookCamera.transform.position, lookCamera.transform.forward, out RaycastHit hit, interactReach, interactLayer))
             {
                 Debug.Log($"Hit {hit.transform.name}");
 
@@ -71,6 +85,28 @@ namespace Player
                 // Must be networked and interactable to interact with
                 interactable.Interact(playerPermissions);
             }
+        }
+
+        /// <summary>
+        /// Highlight interactable items
+        /// </summary>
+        void InteractHighlight()
+        {
+            if (Physics.Raycast(lookCamera.transform.position, lookCamera.transform.forward, out RaycastHit hit, interactReach, interactLayer))
+            {
+                var thing = hit.transform.GetComponent<NetworkObject>();
+
+                if (thing == null) { return; }
+
+                var interactable = hit.transform.GetComponent<IInteractable>();
+
+                if (interactable == null) { return; }
+
+                //Debug.Log($"You can interact with {hit.transform.name}!");
+
+                OnShowInteractPrompt?.Invoke();
+            } 
+            else { OnHideInteractPrompt?.Invoke(); }
         }
     }
 }

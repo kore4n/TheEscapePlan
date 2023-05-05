@@ -23,7 +23,6 @@ public class Door : NetworkBehaviour, IInteractable
     {
         if (!playerPermissions.GetCanOpenDoor()) { return; }
 
-
         bool curIsDoorOpen = isDoorOpen.Value;
         bool newIsDoorOpen = !isDoorOpen.Value;
 
@@ -35,5 +34,7 @@ public class Door : NetworkBehaviour, IInteractable
         doorAnimator.SetBool("OpenDoor", newIsDoorOpen);
 
         isDoorOpen.Value = newIsDoorOpen;
+
+
     }
 }
